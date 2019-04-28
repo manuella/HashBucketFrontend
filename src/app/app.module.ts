@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+// /HttpClientModule
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule }   from './app-routing.module';
 
@@ -14,8 +15,10 @@ import { HashBucketComponent } from './hash-bucket/hash-bucket.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
-
+    HttpClientModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

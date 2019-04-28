@@ -1,3 +1,7 @@
-<p>
-  hash-bucket works!
-</p>
+Hash Bucket
+
+<form [formGroup]="hashForm" (ngSubmit)="submit()">
+  <input type="password" formControlName="password"><br>
+  <input type="message" formControlName="message"><br>
+  <button type="submit">Submit</button>
+</form>
