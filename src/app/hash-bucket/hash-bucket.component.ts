@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule,FormControl, FormGroup } from '@angular/forms';
-import { HttpClient } from'@angular/common/http';
+import { EncryptedKeyValue } from '../models/EncryptedKeyValue';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
+import { HashBucketService } from '../services/hash-bucket-service.service';
 
 @Component({
   selector: 'app-hash-bucket',
@@ -10,10 +14,12 @@ import { HttpClient } from'@angular/common/http';
 })
 export class HashBucketComponent implements OnInit {
 
-  LocalURL =  "https://localhost:5001/api/HashBucket";
   hashForm: FormGroup;
 
-  constructor(private httpService : HttpClient) { }
+  constructor(
+              private route: ActivatedRoute,
+              private router: Router,
+              private service: HashBucketService) { }
 
   ngOnInit() {
     this.hashForm = new FormGroup({
@@ -21,12 +27,13 @@ export class HashBucketComponent implements OnInit {
       message: new FormControl('')
     });
   }
+
   submit() {
     if (this.hashForm.valid) {
       console.log("submit: " + this.hashForm.value.password + " , " +
                   this.hashForm.value.message);
+
+      this.service.setHash(this.hashForm.value.password, this.hashForm.value.message)
       }
     }
-
-
 }

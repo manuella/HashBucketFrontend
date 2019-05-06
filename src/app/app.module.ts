@@ -7,11 +7,13 @@ import { AppRoutingModule }   from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { HashBucketComponent } from './hash-bucket/hash-bucket.component';
+import { LookupHashBucketComponent } from './lookup-hash-bucket/lookup-hash-bucket.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HashBucketComponent
+    HashBucketComponent,
+    LookupHashBucketComponent
   ],
   imports: [
     BrowserModule,
