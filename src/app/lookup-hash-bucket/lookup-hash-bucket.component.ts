@@ -20,22 +20,21 @@ export class LookupHashBucketComponent implements OnInit {
 
   password: string;
   display: string;
-  eContent: String;
   ngOnInit() {
     this.password = this.route.snapshot.paramMap.get("password");
     var generatedHashKey = SHA1(this.password).toString();
 
     this.service.getValue(generatedHashKey).subscribe(
-      (data: EncryptedKeyValue) => this.Decrypt(data.encryptedValue.toString()));
+      (data: EncryptedKeyValue) => this.Decrypt(data.encryptedValue.toString(), this.password));
     }
 
-    private Decrypt(setval: String )
+    private Decrypt(eVal: String, password: String )
     {
-      this.eContent = setval;
-      console.log("Encrypted block: " + this.eContent);
+      console.log("Encrypted block: " + eVal);
       console.log("Password: " + this.password );
 
-      this.display = AES.decrypt(this.eContent, this.password); 
+      this.display = AES.decrypt(eVal, password).toString(); 
+      console.log(AES.decrypt(eVal, password).toString());
       console.log("MESSAGE : " + this.display);
     }
   }
