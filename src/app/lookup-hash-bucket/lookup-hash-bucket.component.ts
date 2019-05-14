@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import {HashBucketService } from '../services/hash-bucket-service.service';
 import {EncryptedKeyValue} from '../models/EncryptedKeyValue';
-import { AES, SHA1  } from "crypto-js";
+import { AES, SHA1, enc  } from "crypto-js";
 
 @Component({
   selector: 'app-lookup-hash-bucket',
@@ -25,16 +25,19 @@ export class LookupHashBucketComponent implements OnInit {
     var generatedHashKey = SHA1(this.password).toString();
 
     this.service.getValue(generatedHashKey).subscribe(
-      (data: EncryptedKeyValue) => this.Decrypt(data.encryptedValue.toString(), this.password));
+      (data: EncryptedKeyValue) => 
+       this.Decrypt(data.encryptedValue, this.password));
     }
 
     private Decrypt(eVal: String, password: String )
     {
       console.log("Encrypted block: " + eVal);
-      console.log("Password: " + this.password );
+      console.log("Passed password: " + password);
 
-      this.display = AES.decrypt(eVal, password).toString(); 
-      console.log(AES.decrypt(eVal, password).toString());
+//      this.display = AES.decrypt(eVal, password).toString(); 
+      this.display = AES.decrypt(eVal, password).toString();//.toString(enc.Utf8); 
+
+      console.log( AES.decrypt(eVal, password).toString(enc.Utf8));
       console.log("MESSAGE : " + this.display);
     }
   }

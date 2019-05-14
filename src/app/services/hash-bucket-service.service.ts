@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AES, SHA1 } from "crypto-js";
+import { AES, SHA1, enc } from "crypto-js";
 import { EncryptedKeyValue } from "../models/EncryptedKeyValue";
 import { HttpClient, HttpHeaders, HttpParams } from'@angular/common/http';
 import { Observable } from 'rxjs';
@@ -22,16 +22,20 @@ export class HashBucketService {
 
   public setHash(password: string ,content: string)
   {
-      var generatedEncryptedValue = AES.encrypt(content, password).toString();
+      var generatedEncryptedValue = AES.encrypt(content, password);
+      var ge = generatedEncryptedValue.toString();
       var generatedHashKey = SHA1(password).toString();
 
       console.log("Hash: " +
-      generatedHashKey + "\nEncrypted Block: " + generatedEncryptedValue);
-      
+      generatedHashKey + "\nEncrypted Block: " + ge);
+
+      console.log("password: " + password + " content: " + content);
+      console.log("Decrypt local: " + AES.decrypt(ge, password).toString(enc.Utf8)); 
+
       var model =
         {
           "hashKey":generatedHashKey,
-          "encryptedValue": generatedEncryptedValue
+          "encryptedValue": ge
        };
 
       this.httpService.post<EncryptedKeyValue>(this.LocalURL, model).
@@ -45,14 +49,10 @@ export class HashBucketService {
         );
   }
 
-  public getValue(password:string) : Observable<EncryptedKeyValue>
+  public getValue(hashKey:string) : Observable<EncryptedKeyValue>
   {
-    console.log("Get request : " + password);
-    var generatedHashKey = SHA1(password);
-    let getURL = this.LocalURL + "/" + generatedHashKey;
+    let getURL = this.LocalURL + "/" + hashKey;
     console.log("URL: " + getURL);
     return this.httpService.get<EncryptedKeyValue>(getURL);
-
-    console.log("response: " + this.EncryptedReturn.toString());
   }
 }
