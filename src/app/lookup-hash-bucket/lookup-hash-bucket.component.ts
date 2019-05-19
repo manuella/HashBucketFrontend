@@ -35,7 +35,7 @@ export class LookupHashBucketComponent implements OnInit {
       console.log("Passed password: " + password);
 
 //      this.display = AES.decrypt(eVal, password).toString(); 
-      this.display = AES.decrypt(eVal, password).toString();//.toString(enc.Utf8); 
+      this.display = AES.decrypt(eVal, password).toString(enc.Utf8);//.toString(enc.Utf8); 
 
       console.log( AES.decrypt(eVal, password).toString(enc.Utf8));
       console.log("MESSAGE : " + this.display);
