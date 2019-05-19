@@ -1,0 +1,45 @@
+What happens when there is a duplicate hash key?
+   -Reject
+      -An attacker will be able to 'fish' for valid passwords :(
+   -Overwrite
+      -Other users lose their spot :(
+
+I'm considering ignoring this. This is a rock-and-hard-place scenerio, I 
+imagine that this algorithm will be useful in a controlled-storage situation.
+  -ie. storing data on a hard drive, or some storage vector where there is a 
+       single writer. This could be the case in a boardcaster scenario or a
+       local hard disk implementation.
+--------------------------------------------------------------------------------
+
+Chaining:
+  We can store passwords within the encrypted bodies of other EncryptedMessages.
+  This opens the potential to file-system like permissions.
+  Ex:
+  
+    I give Anthoney password  : "JanoritorialStaff1123987"
+    I give Gertrude password : "Athlete13561234"
+    I give Toby password     : "Spectator123423"
+    
+    HashBucket: Password: JanoritorialStaff1123987 => Content "Maintenance Tunnel access code: 7356 // Athlete13561234"
+    HashBucket: Password: JanoritorialStaff1123987 => Content "Maintenance Tunnel access code: 7356 // Athlete13561234"
+    HashBucket: Password: Athlete13561234          => Content "Field access code: 7356 // "
+    HashBucket: Password: Spectator123423          => Content "Main Entrance ticket number: 4465798732"
+    
+    Anthoney may clean the Maintenance Tunnels, the field, and the main entrance by decrypting 'down' 
+      the chain from JanoritorialStaff1123987.
+    
+    Gertrude may play on the field and interact with fans at the main entrance by decrypting 'down' 
+      the chain from Athlete13561234.
+      
+    Toby may walk in the main entrance with his ticket, no other access.
+    
+    The immediate benefit to this privelege scheme is that if I change the access code to the field, 
+    we never need to update recursively down the chain. As soon as we update the athlete entry, janitor
+    is aware of the field access code as well.
+    
+  There is the possibility of recursive and tree based behavior introduces use scenarios.
+  -----------------------------------------------------------------------------------
+  Hashing:
+    -If this is not one to one hashing, then there is the possibility of overlaps :(
+    -If the hash can be reversed, then this algorithm is not secure anymore :(
+  
